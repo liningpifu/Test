@@ -1,0 +1,37 @@
+package com.kurt.android.activity.fragment;
+
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.widget.CursorAdapter;
+
+public class FragmentSample extends Fragment implements LoaderCallbacks<Cursor>{
+
+    private CursorAdapter mAdapter; //Indeed, we must init this. 
+    
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getActivity().getSupportLoaderManager().initLoader(0, null, this); //or restartLoader
+    }
+    
+    @Override
+    public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
+        Uri uri = Uri.parse("sample"); //Indeed, we must have a effective uri. 
+        return new CursorLoader(getActivity(), uri, null, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> arg0, Cursor arg1) {
+        mAdapter.swapCursor(arg1);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> arg0) {
+        mAdapter.swapCursor(null);
+    }
+}
